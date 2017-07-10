@@ -11,8 +11,9 @@
 # 
 # - [量子コンピュータで1+1を計算する](http://qiita.com/kjtnk/items/8385052a50e3154d1022)
 # - [IBM Q experience library](https://quantumexperience.ng.bluemix.net/qx/user-guide)
+# - [A developer’s guide to using the Quantum QISKit SDK](https://developer.ibm.com/code/2017/05/17/developers-guide-to-quantum-qiskit-sdk/)
 
-# ## コードを使うまでにやるべきこと
+# ## はじめにやるべきこと
 
 # 1. IBM QuantumExperienceパッケージをpipでダウンロード&インストールする: `pip install --upgrade IBMQuantumExperience` もしくは `pip3 install --upgrade IBMQuantumExperience`
 # 
@@ -41,7 +42,7 @@ import Qconfig
 # - a Quantum Register
 # - a Classical Register
 # 
-# がある。これらを作成する。基本的な流れとしては、レジスタの作成(入力)->回路の設計->量子レジスタを古典レジスタに変換->出力となっている。
+# がある。これらを作成する。基本的な流れとしては、**レジスタの作成(入力)->回路の設計->量子レジスタを古典レジスタに変換->出力**となっている。(各細かいステップについては勉強不足)
 
 # In[2]:
 
@@ -88,7 +89,7 @@ Q_SPECS = {
 Q_program = QuantumProgram(specs=Q_SPECS) 
 
 
-# 上では全体の回路を`Q_SPEC`としてまとめた。今後この方法でレジスタを作成する。回路やレジスタの指定には、以下のようにして作成したインスタンスを用いる。
+# ここで`Q_program`は一つの回路の土台と考えれば良い。今後この方法でレジスタを作成する。回路やレジスタの指定には、以下のようにして作成したインスタンスを用いる。いずれも`Q_program`に対して定義される。
 
 # In[5]:
 
@@ -107,7 +108,7 @@ classical_r = Q_program.get_classical_registers('cr')
 
 # ## Step2: 回路にゲートを追加する
 
-# 以降は[「量子コンピュータで1+1を計算する」](http://qiita.com/kjtnk/items/8385052a50e3154d1022)　をベースにして計算させてみる。
+# 以降は[「量子コンピュータで1+1を計算する」](http://qiita.com/kjtnk/items/8385052a50e3154d1022)をベースにして計算させてみる。
 # 
 # まずは0+0を計算させよう. これまでやってきたようにレジスタを持つ回路を作成したら、`circuit`インスタンスにいろいろ「ゲート」を追加できる。量子コンピュータでは0+0は以下のように組めば良い.
 # 
@@ -143,6 +144,8 @@ print(QASM_source)
 
 
 # ## Step3: コードの実行
+
+# ここでコードを実行し、クラウドを介してIBMの量子コンピュータと接続して計算を行う。このステップでPersonal tokenが必要になる。
 
 # In[15]:
 
@@ -353,7 +356,7 @@ print(result)
 Q_program.get_counts("Circuit")
 
 
-# `1 + 0 = 01`となり、1+0=1が計算できている。1024は2の10乗なので、2の冪が10になれば100%かな？違いは回路作成の最初に`quantum_r[0]`に対してビット反転`x`を施したことにある。先の例(0+0=00)では、何も入力されていない状態=0であったのが、今回は反転により`1`になっていた。結果としてこの理屈で計算を進めると、ほしい結果が得られた。
+# `1 + 0 = 01`となり、1+0=1が計算できている。出力は古典ビットとして`cr[3]cr[2]cr[1]cr[0]`と出ることに注意。1024は2の10乗なので、2の冪が10になれば100%かな？違いは回路作成の最初に`quantum_r[0]`に対してビット反転`x`を施したことにある。先の例(0+0=00)では、何も入力されていない状態=0であったのが、今回は反転により`1`になっていた。結果としてこの理屈で計算を進めると、ほしい結果が得られた。
 
 # ### 1+1
 

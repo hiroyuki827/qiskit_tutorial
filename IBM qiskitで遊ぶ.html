@@ -11789,6 +11789,7 @@ div#notebook {
 <ul>
 <li><a href="http://qiita.com/kjtnk/items/8385052a50e3154d1022">量子コンピュータで1+1を計算する</a></li>
 <li><a href="https://quantumexperience.ng.bluemix.net/qx/user-guide">IBM Q experience library</a></li>
+<li><a href="https://developer.ibm.com/code/2017/05/17/developers-guide-to-quantum-qiskit-sdk/">A developer’s guide to using the Quantum QISKit SDK</a></li>
 </ul>
 
 </div>
@@ -11798,7 +11799,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="&#12467;&#12540;&#12489;&#12434;&#20351;&#12358;&#12414;&#12391;&#12395;&#12420;&#12427;&#12409;&#12365;&#12371;&#12392;">&#12467;&#12540;&#12489;&#12434;&#20351;&#12358;&#12414;&#12391;&#12395;&#12420;&#12427;&#12409;&#12365;&#12371;&#12392;<a class="anchor-link" href="#&#12467;&#12540;&#12489;&#12434;&#20351;&#12358;&#12414;&#12391;&#12395;&#12420;&#12427;&#12409;&#12365;&#12371;&#12392;">&#182;</a></h2>
+<h2 id="&#12399;&#12376;&#12417;&#12395;&#12420;&#12427;&#12409;&#12365;&#12371;&#12392;">&#12399;&#12376;&#12417;&#12395;&#12420;&#12427;&#12409;&#12365;&#12371;&#12392;<a class="anchor-link" href="#&#12399;&#12376;&#12417;&#12395;&#12420;&#12427;&#12409;&#12365;&#12371;&#12392;">&#182;</a></h2>
 </div>
 </div>
 </div>
@@ -11857,7 +11858,7 @@ div#notebook {
 <li>a Quantum Register</li>
 <li>a Classical Register</li>
 </ul>
-<p>がある。これらを作成する。基本的な流れとしては、レジスタの作成(入力)-&gt;回路の設計-&gt;量子レジスタを古典レジスタに変換-&gt;出力となっている。</p>
+<p>がある。これらを作成する。基本的な流れとしては、<strong>レジスタの作成(入力)-&gt;回路の設計-&gt;量子レジスタを古典レジスタに変換-&gt;出力</strong>となっている。(各細かいステップについては勉強不足)</p>
 
 </div>
 </div>
@@ -11984,7 +11985,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>上では全体の回路を<code>Q_SPEC</code>としてまとめた。今後この方法でレジスタを作成する。回路やレジスタの指定には、以下のようにして作成したインスタンスを用いる。</p>
+<p>ここで<code>Q_program</code>は一つの回路の土台と考えれば良い。今後この方法でレジスタを作成する。回路やレジスタの指定には、以下のようにして作成したインスタンスを用いる。いずれも<code>Q_program</code>に対して定義される。</p>
 
 </div>
 </div>
@@ -12023,7 +12024,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>以降は<a href="http://qiita.com/kjtnk/items/8385052a50e3154d1022">「量子コンピュータで1+1を計算する」</a>　をベースにして計算させてみる。</p>
+<p>以降は<a href="http://qiita.com/kjtnk/items/8385052a50e3154d1022">「量子コンピュータで1+1を計算する」</a>をベースにして計算させてみる。</p>
 <p>まずは0+0を計算させよう. これまでやってきたようにレジスタを持つ回路を作成したら、<code>circuit</code>インスタンスにいろいろ「ゲート」を追加できる。量子コンピュータでは0+0は以下のように組めば良い.</p>
 <p><img src='0+0.png'/></p>
 
@@ -12100,6 +12101,15 @@ measure qr[3] -&gt; cr[0];
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Step3:-&#12467;&#12540;&#12489;&#12398;&#23455;&#34892;">Step3: &#12467;&#12540;&#12489;&#12398;&#23455;&#34892;<a class="anchor-link" href="#Step3:-&#12467;&#12540;&#12489;&#12398;&#23455;&#34892;">&#182;</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>ここでコードを実行し、クラウドを介してIBMの量子コンピュータと接続して計算を行う。このステップでPersonal tokenが必要になる。</p>
+
 </div>
 </div>
 </div>
@@ -12526,7 +12536,7 @@ running on backend: simulator
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><code>1 + 0 = 01</code>となり、1+0=1が計算できている。1024は2の10乗なので、2の冪が10になれば100%かな？違いは回路作成の最初に<code>quantum_r[0]</code>に対してビット反転<code>x</code>を施したことにある。先の例(0+0=00)では、何も入力されていない状態=0であったのが、今回は反転により<code>1</code>になっていた。結果としてこの理屈で計算を進めると、ほしい結果が得られた。</p>
+<p><code>1 + 0 = 01</code>となり、1+0=1が計算できている。出力は古典ビットとして<code>cr[3]cr[2]cr[1]cr[0]</code>と出ることに注意。1024は2の10乗なので、2の冪が10になれば100%かな？違いは回路作成の最初に<code>quantum_r[0]</code>に対してビット反転<code>x</code>を施したことにある。先の例(0+0=00)では、何も入力されていない状態=0であったのが、今回は反転により<code>1</code>になっていた。結果としてこの理屈で計算を進めると、ほしい結果が得られた。</p>
 
 </div>
 </div>
