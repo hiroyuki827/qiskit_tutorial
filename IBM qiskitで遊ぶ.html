@@ -11775,7 +11775,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="IBM-QISKit&#12494;&#12540;&#12488;">IBM QISKit&#12494;&#12540;&#12488;<a class="anchor-link" href="#IBM-QISKit&#12494;&#12540;&#12488;">&#182;</a></h1>
+<h1 id="IBM-QISKit&#12391;&#36938;&#12406;">IBM QISKit&#12391;&#36938;&#12406;<a class="anchor-link" href="#IBM-QISKit&#12391;&#36938;&#12406;">&#182;</a></h1>
 </div>
 </div>
 </div>
@@ -11783,7 +11783,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>このノートでは、IBMによって公開された量子コンピュータのAPI「QISKit」を用いた計算についてまとめています。詳しい量子コンピュータの原理についてはまとめていません。(私自身物理を学んでいる身なので、興味が湧けば追記するかも？) その代わり、Qiitaで初等的なよい例を見つけたので、それをコーディングとしてどう実装するかについて幾つかの例を挙げました。</p>
+<p>このノートでは、IBMによって公開された量子コンピュータのSDK「QISKit」を用いた計算についてまとめています。詳しい量子コンピュータの原理についてはまとめていません。(私自身物理を学んでいる身なので、興味が湧けば追記するかも？) その代わり、Qiitaで初等的なよい例を見つけたので、それをコーディングとしてどう実装するかについて幾つかの例を挙げました。</p>
 <p>このノートを実行するためにはいくつかのステップが必要です。以下の通り準備を行ってから始めてください。</p>
 <p>(参考文献)</p>
 <ul>
@@ -12772,10 +12772,8 @@ running on backend: simulator
 <span class="c1"># Create circuit: 1 + 1</span>
 <span class="c1"># ----------------------------------------------</span>
 
-<span class="c1"># bit-flip 0 -&gt; 1 at Qbit 0</span>
+<span class="c1"># superposition at Qbit 0 and 1</span>
 <span class="n">circuit</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="n">quantum_r</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-
-<span class="c1"># bit-flip 0 -&gt; 1 at Qbit 1</span>
 <span class="n">circuit</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="n">quantum_r</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 
 <span class="c1"># AND gate from Qbit 0 to the Qbit 1 and 2</span>
@@ -12880,6 +12878,16 @@ running on backend: simulator
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>となり、各結果が計算できました。このコードでは、先程の<code>circuit.x</code>の代わりに<code>circuit.h</code>を用いて、<code>quantum_r[0]</code>と<code>quantum_r[1]</code>の重ね合わせの状態を使いました。</p>
+<p>量子コンピュータの処理が早いと言われる所以はここにあります。このように幾つかの処理を重ね合わせの状態を用いて同時に行えるんですね。今はまだ4つの量子レジスタだけを使っていますし、IBMの量子コンピュータもまだそこまで大規模ではないですが、大量の量子レジスタを持つ量子コンピュータができた場合、とんでもない数の計算を同時に行うことができます。</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="&#12362;&#12431;&#12426;&#12395;">&#12362;&#12431;&#12426;&#12395;<a class="anchor-link" href="#&#12362;&#12431;&#12426;&#12395;">&#182;</a></h2><p>今回は主にどうやって実装するかについてまとめました。ただ、各コードの意味をまだ深く理解できていませんし、ネットに転がっている情報も少ないので、もっともっとIBM Qに触れる人が出てくればいいのにと思います。。。</p>
 
 </div>
 </div>
