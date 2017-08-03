@@ -11787,7 +11787,7 @@ div#notebook {
 <p>このノートを実行するためにはいくつかのステップが必要です。以下の通り準備を行ってから始めてください。</p>
 <p>(参考文献)</p>
 <ul>
-<li><a href="http://qiita.com/kjtnk/items/8385052a50e3154d1022">量子コンピュータで1+1を計算する</a></li>
+<li><a href="http://qiita.com/kjtnk/items/8385052a50e3154d1022">量子コンピュータで1+1を計算する</a> [Japanese]</li>
 <li><a href="https://quantumexperience.ng.bluemix.net/qx/user-guide">IBM Q experience library</a></li>
 <li><a href="https://developer.ibm.com/code/2017/05/17/developers-guide-to-quantum-qiskit-sdk/">A developer’s guide to using the Quantum QISKit SDK</a></li>
 </ul>
@@ -11808,17 +11808,47 @@ div#notebook {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <ol>
-<li><p>IBM QuantumExperienceパッケージをpipでダウンロード&amp;インストールする: <code>pip install --upgrade IBMQuantumExperience</code> もしくは <code>pip3 install --upgrade IBMQuantumExperience</code></p>
-</li>
-<li><p>作業ディレクトリを作成し, <code>git clone git clone https://github.com/IBM/qiskit-sdk-py</code>する。</p>
-</li>
+<li>IBM QuantumExperienceパッケージをpipでダウンロード&amp;インストールする: </li>
+</ol>
+<p><code>pip install --upgrade IBMQuantumExperience</code></p>
+<p>もしくは</p>
+<p><code>pip3 install --upgrade IBMQuantumExperience</code></p>
+<ol>
+<li>作業ディレクトリを作成し, </li>
+</ol>
+<p><code>git clone git clone https://github.com/IBM/qiskit-sdk-py</code></p>
+<ol>
 <li><p><code>make run</code>してAnacondaの仮想環境を作成する。</p>
 </li>
-<li><p>作業ディレクトリの<code>giskit-sdk-py</code>ディレクトリに移動し、<code>make run</code>で<code>jupyter notebook</code>. これで「tutorial内で」jupyterを起動できるようになる.</p>
+<li><p>作業ディレクトリの<code>giskit-sdk-py</code>ディレクトリに移動し、<code>make run</code>で<code>jupyter notebook</code>が起動する. これで「tutorial内で」jupyterを起動できるようになる。この際必要なSDKはすべて読み込まれている。</p>
 </li>
-<li><p><code>cp tutorial/Qconfig.py.default Qconfig.py</code>を実行し、Qconfig.pyを作成する。ここで、別途<a href="https://quantumexperience.ng.bluemix.net/qx/user-guide">こちら</a> でアカウントを作成し、Personal tokenを取得する。これを<code>Qconfig.py</code>の所定の欄（コメントアウトしているものを外して""内）に入れる。</p>
+<li><p><code>cp tutorial/Qconfig.py.default Qconfig.py</code>を実行し、Qconfig.pyを作成する。ここで、別途<a href="https://quantumexperience.ng.bluemix.net/qx/user-guide">こちら</a> でアカウントを作成し、Personal tokenを取得する。これを<code>Qconfig.py</code>の所定の欄に入れる。</p>
 </li>
 </ol>
+<p><em>アカウント作成の際の注意</em></p>
+<p><strong>使用目的</strong></p>
+<ul>
+<li>以下の２つの欄は適当に答えれば良いかも。別にほんとうの意味での研究目的じゃなくても構わない.
+<img src="./register.png" alt=""></li>
+</ul>
+<p><strong>Personal token</strong>
+以下の画像は私の場合です。
+<img src="Personal_token.png" alt=""></p>
+<p>一回生成させたら、それを<code>Qconfig.py</code>の</p>
+
+<pre><code># Before you can use the jobs API, you need to set up an access token.
+# Log in to the Quantum Experience. Under "Account", generate a personal 
+# access token. Replace "None" below with the quoted token string.
+# Uncomment the APItoken variable, and you will be ready to go.
+
+APItoken = "" # この中に入れる。
+
+config = {
+  "url": 'https://quantumexperience.ng.bluemix.net/api'
+}
+
+if 'APItoken' not in locals():
+  raise Exception("Please set up your access token. See Qconfig.py.")</code></pre>
 
 </div>
 </div>
@@ -11827,7 +11857,8 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Step1:-&#12503;&#12525;&#12464;&#12521;&#12512;&#12434;&#20316;&#25104;&#12377;&#12427;">Step1: &#12503;&#12525;&#12464;&#12521;&#12512;&#12434;&#20316;&#25104;&#12377;&#12427;<a class="anchor-link" href="#Step1:-&#12503;&#12525;&#12464;&#12521;&#12512;&#12434;&#20316;&#25104;&#12377;&#12427;">&#182;</a></h2>
+<h2 id="Step1:-&#12503;&#12525;&#12464;&#12521;&#12512;&#12434;&#20316;&#25104;&#12377;&#12427;">Step1: &#12503;&#12525;&#12464;&#12521;&#12512;&#12434;&#20316;&#25104;&#12377;&#12427;<a class="anchor-link" href="#Step1:-&#12503;&#12525;&#12464;&#12521;&#12512;&#12434;&#20316;&#25104;&#12377;&#12427;">&#182;</a></h2><p>量子コンピュータの理屈はとりあえず置いといて、実装に関する基本的な構成についてまとめます。</p>
+
 </div>
 </div>
 </div>
@@ -11855,12 +11886,13 @@ div#notebook {
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>プログラムの主なパートとして</p>
 <ul>
-<li>QuantumProgram</li>
-<li>a Circuit</li>
-<li>a Quantum Register</li>
-<li>a Classical Register</li>
+<li>QuantumProgram : 全体的なプログラム</li>
+<li>a Circuit : 細かい部品をひとまとめにしたもの。プログラムはcircuitの集合として表せる。</li>
+<li>a Quantum Register : 入力</li>
+<li>a Classical Register : 出力</li>
 </ul>
-<p>がある。これらを作成する。基本的な流れとしては、<strong>レジスタの作成(入力)-&gt;回路の設計-&gt;量子レジスタを古典レジスタに変換-&gt;出力</strong>となっている。(各細かいステップについては勉強不足)</p>
+<p>がある。</p>
+<p>これらを作成する。基本的な流れとしては、<strong>量子レジスタの作成(入力)-&gt;Cuicuitの設計-&gt;量子レジスタを古典レジスタに変換-&gt;古典レジスタ(出力)</strong>となっている。</p>
 
 </div>
 </div>
@@ -11870,13 +11902,13 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># QuantumProgramクラスのメソッドとしてQ_program作成</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># QuantumProgramクラスのインスタンスとしてQ_program作成</span>
 <span class="n">Q_program</span> <span class="o">=</span> <span class="n">QuantumProgram</span><span class="p">()</span> 
 
-<span class="c1"># レジスタの作成. Qbitと名称を指定</span>
-<span class="c1"># 2Qbitを持つレジスタqr (量子的)</span>
+<span class="c1"># レジスタの作成. Q_programのオブジェクト</span>
+<span class="c1"># 2Qbitを持つ量子レジスタqr</span>
 <span class="n">Q_program</span><span class="o">.</span><span class="n">create_quantum_registers</span><span class="p">(</span><span class="s2">&quot;qr&quot;</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
-<span class="c1"># 2bitを持つレジスタcr (古典的)</span>
+<span class="c1"># 2bitを持つ古典レジスタcr</span>
 <span class="n">Q_program</span><span class="o">.</span><span class="n">create_classical_registers</span><span class="p">(</span><span class="s2">&quot;cr&quot;</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span> 
 
 <span class="c1"># 回路 &quot;qc&quot; の作成</span>
@@ -11912,7 +11944,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>==&gt; 各レジスタが作成された。これらの作業は以下のようにも書ける:</p>
+<p>==&gt; 各レジスタが作成された。一つ一つの部品を書くよりは、まとめて以下のようにも書ける:</p>
 
 </div>
 </div>
@@ -11987,7 +12019,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>ここで<code>Q_program</code>は一つの回路の土台と考えれば良い。今後この方法でレジスタを作成する。回路やレジスタの指定には、以下のようにして作成したインスタンスを用いる。いずれも<code>Q_program</code>に対して定義される。</p>
+<p>今後この方法でレジスタを作成する。回路やレジスタの指定には、以下のようにして作成したインスタンスを用いる。いずれも<code>Q_program</code>に対するオブジェクトとして定義されている。</p>
 
 </div>
 </div>
@@ -12018,6 +12050,69 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p>ここまでのコードをまとめると以下のようになる。</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># jupyterはtutorial内で起動するため、qiskitパッケージをインポートするためにディレクトリの階層を一つ上げる必要がある。</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;../&quot;</span><span class="p">)</span> 
+
+<span class="kn">from</span> <span class="nn">qiskit</span> <span class="k">import</span> <span class="n">QuantumProgram</span> 
+<span class="kn">import</span> <span class="nn">Qconfig</span>
+
+<span class="n">Q_SPECS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Program-tutorial&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;circuits&quot;</span><span class="p">:</span> <span class="p">[{</span>
+         <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Circuit&quot;</span><span class="p">,</span>
+         <span class="s2">&quot;quantum_registers&quot;</span><span class="p">:</span> <span class="p">[{</span>
+             <span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;qr&quot;</span><span class="p">,</span>
+             <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="mi">4</span> 
+         <span class="p">}],</span>
+         <span class="s2">&quot;classical_registers&quot;</span><span class="p">:</span> <span class="p">[{</span>
+              <span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;cr&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="mi">4</span>
+         <span class="p">}]}],</span>
+<span class="p">}</span>
+
+<span class="n">Q_program</span> <span class="o">=</span> <span class="n">QuantumProgram</span><span class="p">(</span><span class="n">specs</span><span class="o">=</span><span class="n">Q_SPECS</span><span class="p">)</span> 
+
+<span class="c1">#get the components.</span>
+
+<span class="c1"># get the circuit by Name</span>
+<span class="n">circuit</span> <span class="o">=</span> <span class="n">Q_program</span><span class="o">.</span><span class="n">get_circuit</span><span class="p">(</span><span class="s2">&quot;Circuit&quot;</span><span class="p">)</span>
+
+<span class="c1"># get the Quantum Register by Name</span>
+<span class="n">quantum_r</span> <span class="o">=</span> <span class="n">Q_program</span><span class="o">.</span><span class="n">get_quantum_registers</span><span class="p">(</span><span class="s2">&quot;qr&quot;</span><span class="p">)</span>
+
+<span class="c1"># get the Classical Register by Name</span>
+<span class="n">classical_r</span> <span class="o">=</span> <span class="n">Q_program</span><span class="o">.</span><span class="n">get_classical_registers</span><span class="p">(</span><span class="s1">&#39;cr&#39;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>ここでは入力と出力、回路を用意しただけなので、次のステップでは実際に回路にいろいろな操作（ゲート）を付け加えていくことにしよう。</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Step2:-&#22238;&#36335;&#12395;&#12466;&#12540;&#12488;&#12434;&#36861;&#21152;&#12377;&#12427;">Step2: &#22238;&#36335;&#12395;&#12466;&#12540;&#12488;&#12434;&#36861;&#21152;&#12377;&#12427;<a class="anchor-link" href="#Step2:-&#22238;&#36335;&#12395;&#12466;&#12540;&#12488;&#12434;&#36861;&#21152;&#12377;&#12427;">&#182;</a></h2>
 </div>
 </div>
@@ -12026,9 +12121,16 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>以降は<a href="http://qiita.com/kjtnk/items/8385052a50e3154d1022">「量子コンピュータで1+1を計算する」</a>をベースにして計算させてみる。</p>
+<p>以降は<a href="http://qiita.com/kjtnk/items/8385052a50e3154d1022">「量子コンピュータで1+1を計算する」</a>をベースにして計算させてみます。</p>
 <p>まずは0+0を計算させよう. これまでやってきたようにレジスタを持つ回路を作成したら、<code>circuit</code>インスタンスにいろいろ「ゲート」を追加できる。量子コンピュータでは0+0は以下のように組めば良い.</p>
 <p><img src='0+0.png'/></p>
+<ol>
+<li>q[0]からq[3]はレジスタ(入力)で、初期値として0が入っている。</li>
+<li>トフォリゲート</li>
+<li>XOR回路: <code>q[0]</code> - <code>q[3]</code></li>
+<li>XOR回路: <code>q[1]</code> - <code>q[3]</code></li>
+<li>計測</li>
+</ol>
 
 </div>
 </div>
@@ -12152,6 +12254,15 @@ measure qr[3] -&gt; cr[0];
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Trueと出ればIBMの量子コンピュータとつながっているので、以下を実行すれば結果が得られる。</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[16]:</div>
@@ -12187,6 +12298,15 @@ measure qr[3] -&gt; cr[0];
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>エラーが出なければ無事計算は終了している。</p>
+
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
@@ -12234,7 +12354,8 @@ measure qr[3] -&gt; cr[0];
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="&#20840;&#20307;&#12398;&#12467;&#12540;&#12489;">&#20840;&#20307;&#12398;&#12467;&#12540;&#12489;<a class="anchor-link" href="#&#20840;&#20307;&#12398;&#12467;&#12540;&#12489;">&#182;</a></h3>
+<h3 id="&#20840;&#20307;&#12398;&#12467;&#12540;&#12489;">&#20840;&#20307;&#12398;&#12467;&#12540;&#12489;<a class="anchor-link" href="#&#20840;&#20307;&#12398;&#12467;&#12540;&#12489;">&#182;</a></h3><p>ここまでのコードをまとめると、以下のようになっている。</p>
+
 </div>
 </div>
 </div>

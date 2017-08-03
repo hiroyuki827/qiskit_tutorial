@@ -9,23 +9,62 @@
 # 
 # (参考文献)
 # 
-# - [量子コンピュータで1+1を計算する](http://qiita.com/kjtnk/items/8385052a50e3154d1022)
+# - [量子コンピュータで1+1を計算する](http://qiita.com/kjtnk/items/8385052a50e3154d1022) [Japanese]
 # - [IBM Q experience library](https://quantumexperience.ng.bluemix.net/qx/user-guide)
 # - [A developer’s guide to using the Quantum QISKit SDK](https://developer.ibm.com/code/2017/05/17/developers-guide-to-quantum-qiskit-sdk/)
 
 # ## はじめにやるべきこと
 
-# 1. IBM QuantumExperienceパッケージをpipでダウンロード&インストールする: `pip install --upgrade IBMQuantumExperience` もしくは `pip3 install --upgrade IBMQuantumExperience`
+# 1. IBM QuantumExperienceパッケージをpipでダウンロード&インストールする: 
 # 
-# 2. 作業ディレクトリを作成し, `git clone git clone https://github.com/IBM/qiskit-sdk-py`する。
+# `pip install --upgrade IBMQuantumExperience` 
+# 
+# もしくは 
+# 
+# `pip3 install --upgrade IBMQuantumExperience`
+# 
+# 2. 作業ディレクトリを作成し, 
+# 
+# `git clone git clone https://github.com/IBM/qiskit-sdk-py`
 # 
 # 3. `make run`してAnacondaの仮想環境を作成する。
 # 
-# 4. 作業ディレクトリの`giskit-sdk-py`ディレクトリに移動し、`make run`で`jupyter notebook`. これで「tutorial内で」jupyterを起動できるようになる.
+# 4. 作業ディレクトリの`giskit-sdk-py`ディレクトリに移動し、`make run`で`jupyter notebook`が起動する. これで「tutorial内で」jupyterを起動できるようになる。この際必要なSDKはすべて読み込まれている。
 # 
-# 5. `cp tutorial/Qconfig.py.default Qconfig.py`を実行し、Qconfig.pyを作成する。ここで、別途[こちら](https://quantumexperience.ng.bluemix.net/qx/user-guide) でアカウントを作成し、Personal tokenを取得する。これを`Qconfig.py`の所定の欄（コメントアウトしているものを外して""内）に入れる。
+# 5. `cp tutorial/Qconfig.py.default Qconfig.py`を実行し、Qconfig.pyを作成する。ここで、別途[こちら](https://quantumexperience.ng.bluemix.net/qx/user-guide) でアカウントを作成し、Personal tokenを取得する。これを`Qconfig.py`の所定の欄に入れる。
+# 
+# *アカウント作成の際の注意*
+# 
+# **使用目的**
+# - 以下の２つの欄は適当に答えれば良いかも。別にほんとうの意味での研究目的じゃなくても構わない.
+# ![](./register.png)
+# 
+# **Personal token**
+# 以下の画像は私の場合です。
+# ![](Personal_token.png)
+# 
+# 一回生成させたら、それを`Qconfig.py`の
+# 
+# ```
+# # Before you can use the jobs API, you need to set up an access token.
+# # Log in to the Quantum Experience. Under "Account", generate a personal 
+# # access token. Replace "None" below with the quoted token string.
+# # Uncomment the APItoken variable, and you will be ready to go.
+# 
+# APItoken = "" # この中に入れる。
+# 
+# config = {
+#   "url": 'https://quantumexperience.ng.bluemix.net/api'
+# }
+# 
+# if 'APItoken' not in locals():
+#   raise Exception("Please set up your access token. See Qconfig.py.")
+# 
+# ```
 
 # ## Step1: プログラムを作成する
+# 
+# 量子コンピュータの理屈はとりあえず置いといて、実装に関する基本的な構成についてまとめます。
 
 # In[1]:
 
@@ -39,23 +78,26 @@ import Qconfig
 
 
 # プログラムの主なパートとして
-# - QuantumProgram
-# - a Circuit
-# - a Quantum Register
-# - a Classical Register
+# - QuantumProgram : 全体的なプログラム
+# - a Circuit : 細かい部品をひとまとめにしたもの。プログラムはcircuitの集合として表せる。
+# - a Quantum Register : 入力
+# - a Classical Register : 出力
 # 
-# がある。これらを作成する。基本的な流れとしては、**レジスタの作成(入力)->回路の設計->量子レジスタを古典レジスタに変換->出力**となっている。(各細かいステップについては勉強不足)
+# がある。
+# 
+# 
+# これらを作成する。基本的な流れとしては、**量子レジスタの作成(入力)->Cuicuitの設計->量子レジスタを古典レジスタに変換->古典レジスタ(出力)**となっている。
 
 # In[2]:
 
 
-# QuantumProgramクラスのメソッドとしてQ_program作成
+# QuantumProgramクラスのインスタンスとしてQ_program作成
 Q_program = QuantumProgram() 
 
-# レジスタの作成. Qbitと名称を指定
-# 2Qbitを持つレジスタqr (量子的)
+# レジスタの作成. Q_programのオブジェクト
+# 2Qbitを持つ量子レジスタqr
 Q_program.create_quantum_registers("qr", 4)
-# 2bitを持つレジスタcr (古典的)
+# 2bitを持つ古典レジスタcr
 Q_program.create_classical_registers("cr", 4) 
 
 # 回路 "qc" の作成
@@ -63,7 +105,7 @@ Q_program.create_classical_registers("cr", 4)
 qc = Q_program.create_circuit("qc", ["qr"], ["cr"]) 
 
 
-# ==> 各レジスタが作成された。これらの作業は以下のようにも書ける:
+# ==> 各レジスタが作成された。一つ一つの部品を書くよりは、まとめて以下のようにも書ける:
 
 # In[3]:
 
@@ -91,7 +133,7 @@ Q_SPECS = {
 Q_program = QuantumProgram(specs=Q_SPECS) 
 
 
-# ここで`Q_program`は一つの回路の土台と考えれば良い。今後この方法でレジスタを作成する。回路やレジスタの指定には、以下のようにして作成したインスタンスを用いる。いずれも`Q_program`に対して定義される。
+# 今後この方法でレジスタを作成する。回路やレジスタの指定には、以下のようにして作成したインスタンスを用いる。いずれも`Q_program`に対するオブジェクトとして定義されている。
 
 # In[5]:
 
@@ -108,13 +150,61 @@ quantum_r = Q_program.get_quantum_registers("qr")
 classical_r = Q_program.get_classical_registers('cr')
 
 
+# ここまでのコードをまとめると以下のようになる。
+
+# In[ ]:
+
+
+# jupyterはtutorial内で起動するため、qiskitパッケージをインポートするためにディレクトリの階層を一つ上げる必要がある。
+import sys
+sys.path.append("../") 
+
+from qiskit import QuantumProgram 
+import Qconfig
+
+Q_SPECS = {
+    "name": "Program-tutorial",
+    "circuits": [{
+         "name": "Circuit",
+         "quantum_registers": [{
+             "name":"qr",
+             "size": 4 
+         }],
+         "classical_registers": [{
+              "name":"cr",
+              "size": 4
+         }]}],
+}
+
+Q_program = QuantumProgram(specs=Q_SPECS) 
+
+#get the components.
+
+# get the circuit by Name
+circuit = Q_program.get_circuit("Circuit")
+
+# get the Quantum Register by Name
+quantum_r = Q_program.get_quantum_registers("qr")
+
+# get the Classical Register by Name
+classical_r = Q_program.get_classical_registers('cr')
+
+
+# ここでは入力と出力、回路を用意しただけなので、次のステップでは実際に回路にいろいろな操作（ゲート）を付け加えていくことにしよう。
+
 # ## Step2: 回路にゲートを追加する
 
-# 以降は[「量子コンピュータで1+1を計算する」](http://qiita.com/kjtnk/items/8385052a50e3154d1022)をベースにして計算させてみる。
+# 以降は[「量子コンピュータで1+1を計算する」](http://qiita.com/kjtnk/items/8385052a50e3154d1022)をベースにして計算させてみます。
 # 
 # まずは0+0を計算させよう. これまでやってきたようにレジスタを持つ回路を作成したら、`circuit`インスタンスにいろいろ「ゲート」を追加できる。量子コンピュータでは0+0は以下のように組めば良い.
 # 
 # <img src='0+0.png'/>
+# 
+# 1. q[0]からq[3]はレジスタ(入力)で、初期値として0が入っている。
+# 2. トフォリゲート
+# 3. XOR回路: `q[0]` - `q[3]`
+# 4. XOR回路: `q[1]` - `q[3]`
+# 5. 計測
 
 # In[6]:
 
@@ -159,6 +249,8 @@ Q_program.set_api(Qconfig.APItoken, Qconfig.config["url"])
 #set the APIToken and API url 
 
 
+# Trueと出ればIBMの量子コンピュータとつながっているので、以下を実行すれば結果が得られる。
+
 # In[16]:
 
 
@@ -169,6 +261,8 @@ result = Q_program.run(wait=2, timeout=240)
 print(result)
 
 
+# エラーが出なければ無事計算は終了している。
+
 # In[17]:
 
 
@@ -178,6 +272,8 @@ Q_program.get_counts("Circuit")
 # ここで`'0000'`というのは、0+0=00を表している。量子レジスタは4つ用意されているので、その値が古典レジスタの値に入り、0000を出力している。
 
 # ### 全体のコード
+# 
+# ここまでのコードをまとめると、以下のようになっている。
 
 # In[4]:
 
