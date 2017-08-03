@@ -1,17 +1,25 @@
-# Qiskitで遊ぶ
-このノートはIBMによって公開された量子コンピュータ向けのSDK「Qiskit」に初めて触れる方向けに公開しています。作成者自身量子コンピュータが専門ではないので、詳しい説明等はありませんが、[「量子コンピュータで1+1を計算する」](http://qiita.com/kjtnk/items/8385052a50e3154d1022)がどういうことをやっているのかという点で参考になると思います。
+# Let's play with Qiskit
 
+This note is for those who want to touch the SDK for Quantum Computer, 'Qiskit', offered by IBM. Since the theoretical background (even the elementary level!) is not discussed on the document, please consult another references. 
 
-## 動作環境
+# Environment
 Python3.6, Anaconda3, macOS
 
+# References
+- [IBM Q experience library](https://quantumexperience.ng.bluemix.net/qx/user-guide)
+- [A developer’s guide to using the Quantum QISKit SDK](https://developer.ibm.com/code/2017/05/17/developers-guide-to-quantum-qiskit-sdk/)
 
-その他以下のような手順が必要になります。
+# Preparation
+To run this program, you need to...
 
-1. IBM QuantumExperienceパッケージをpipでダウンロード&インストールする: `pip install --upgrade IBMQuantumExperience` もしくは `pip3 install --upgrade IBMQuantumExperience`
+1. Download the package of `IBM QuantumExperience` by pip and install it:
+`pip install --upgrade IBMQuantumExperience` or `pip3 install --upgrade IBMQuantumExperience`
 
-2. 作業ディレクトリを作成し, `git clone git clone https://github.com/IBM/qiskit-sdk-py`する。
+2. create the working directory and execute
+`git clone git clone https://github.com/IBM/qiskit-sdk-py`
 
-3. その中の`giskit-sdk-py`ディレクトリに移動し、`make run`で`jupyter notebook`. これで「tutorial内で」jupyterを起動できるようになる.
+3. move into `qiskit-sdk` directory and then do `make run`. (You will see `jupyter notebook`) After that, you will be able to run Jupyter in `tutorial` directory.
 
-4. `cp tutorial/Qconfig.py.default Qconfig.py`を実行し、Qconfig.pyを作成する。ここで、別途[こちら](https://quantumexperience.ng.bluemix.net/qx/user-guide) でアカウントを作成し、Personal tokenを取得する。これを`Qconfig.py`の所定の欄（コメントアウトしているものを外して""内）に入れる。
+4. execute `cp tutorial/Qconfig.py.default Qconfig.py` and create 'Qconfig.py'. Now, you also need to create the account [here](https://quantumexperience.ng.bluemix.net/qx/user-guide) and obtain Personal token to put in the form (in "...") in `Qconfig.py`.
+
+I also discussed how to do the above things on the notes.
