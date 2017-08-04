@@ -1,5 +1,6 @@
 # Let's play with Qiskit 
-(English version is on 'en_tutorial' branch. See from the above `branches` menu and go to `en_tutorial` branch.)
+(English version is on 'en_tutorial' branch. See [here](https://github.com/hiroyuki827/playing-with-Qiskit/tree/en_tutorial)
+.)
 
 このノートはIBMによって公開された量子コンピュータ向けのSDK「Qiskit」に初めて触れる方向けに公開しています。作成者自身量子コンピュータが専門ではないので、詳しい説明等はありませんが、[「量子コンピュータで1+1を計算する」](http://qiita.com/kjtnk/items/8385052a50e3154d1022)がどういうことをやっているのかという点で参考になると思います。基本的に量子コンピュータの仕組みについては（理解不足のため）説明していません。あくまでも実装の方法について参考にしてください。
 
