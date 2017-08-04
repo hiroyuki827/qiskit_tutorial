@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head><meta charset="utf-8" />
-<title>IBM qiskitで遊ぶ</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>Let's_play_with_qiskit.html</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 
 <style type="text/css">
@@ -11775,7 +11775,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="IBM-QISKit&#12391;&#36938;&#12406;">IBM QISKit&#12391;&#36938;&#12406;<a class="anchor-link" href="#IBM-QISKit&#12391;&#36938;&#12406;">&#182;</a></h1>
+<h1 id="Let's-play-with-qiskit">Let's play with qiskit<a class="anchor-link" href="#Let's-play-with-qiskit">&#182;</a></h1>
 </div>
 </div>
 </div>
@@ -11783,14 +11783,14 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>このノートでは、IBMによって公開された量子コンピュータのSDK「QISKit」を用いた計算についてまとめています。詳しい量子コンピュータの原理についてはまとめていません。(私自身物理を学んでいる身なので、興味が湧けば追記するかも？) その代わり、Qiitaで初等的なよい例を見つけたので、それをコーディングとしてどう実装するかについて幾つかの例を挙げました。</p>
-<p>このノートを実行するためにはいくつかのステップが必要です。以下の通り準備を行ってから始めてください。</p>
-<p>(参考文献)</p>
+<p>This note discusses the computation by the SDK for the quantum computing, 'QISKit', pubished by IBM. I do not summarize the detailed theoretical background of quantum computation. You might hard to understand the quantum computation by only this note and need to consult other references. Instead, I will just give you several elementary examples and its implementation.</p>
+<p><strong>What we deal with</strong>: 0+0=00, 1+0=01, 1+1=10 and the superposition of them.</p>
+<p><strong>References</strong></p>
 <ul>
-<li><a href="http://qiita.com/kjtnk/items/8385052a50e3154d1022">量子コンピュータで1+1を計算する</a> [Japanese]</li>
 <li><a href="https://quantumexperience.ng.bluemix.net/qx/user-guide">IBM Q experience library</a></li>
 <li><a href="https://developer.ibm.com/code/2017/05/17/developers-guide-to-quantum-qiskit-sdk/">A developer’s guide to using the Quantum QISKit SDK</a></li>
 </ul>
+<p>To perform the code on this note, you're supposed to do the follwing praparation.</p>
 
 </div>
 </div>
@@ -11799,7 +11799,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="&#12399;&#12376;&#12417;&#12395;&#12420;&#12427;&#12409;&#12365;&#12371;&#12392;">&#12399;&#12376;&#12417;&#12395;&#12420;&#12427;&#12409;&#12365;&#12371;&#12392;<a class="anchor-link" href="#&#12399;&#12376;&#12417;&#12395;&#12420;&#12427;&#12409;&#12365;&#12371;&#12392;">&#182;</a></h2>
+<h2 id="Getting-started">Getting started<a class="anchor-link" href="#Getting-started">&#182;</a></h2>
 </div>
 </div>
 </div>
@@ -11807,41 +11807,36 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p>To run this program, you need to...</p>
 <ol>
-<li>IBM QuantumExperienceパッケージをpipでダウンロード&amp;インストールする: </li>
-</ol>
-<p><code>pip install --upgrade IBMQuantumExperience</code></p>
-<p>もしくは</p>
-<p><code>pip3 install --upgrade IBMQuantumExperience</code></p>
-<ol>
-<li>作業ディレクトリを作成し, </li>
-</ol>
-<p><code>git clone git clone https://github.com/IBM/qiskit-sdk-py</code></p>
-<ol>
-<li><p><code>make run</code>してAnacondaの仮想環境を作成する。</p>
+<li><p>Download the package of <code>IBM QuantumExperience</code> by pip and install it:
+<code>pip install --upgrade IBMQuantumExperience</code> or <code>pip3 install --upgrade IBMQuantumExperience</code></p>
 </li>
-<li><p>作業ディレクトリの<code>giskit-sdk-py</code>ディレクトリに移動し、<code>make run</code>で<code>jupyter notebook</code>が起動する. これで「tutorial内で」jupyterを起動できるようになる。この際必要なSDKはすべて読み込まれている。</p>
+<li><p>create the working directory and execute
+<code>git clone git clone https://github.com/IBM/qiskit-sdk-py</code></p>
 </li>
-<li><p><code>cp tutorial/Qconfig.py.default Qconfig.py</code>を実行し、Qconfig.pyを作成する。ここで、別途<a href="https://quantumexperience.ng.bluemix.net/qx/user-guide">こちら</a> でアカウントを作成し、Personal tokenを取得する。これを<code>Qconfig.py</code>の所定の欄に入れる。</p>
+<li><p>move into <code>qiskit-sdk</code> directory and then do <code>make run</code>. (You will see <code>jupyter notebook</code>) After that, you will be able to run Jupyter in <code>tutorial</code> directory.</p>
+</li>
+<li><p>execute <code>cp tutorial/Qconfig.py.default Qconfig.py</code> and create 'Qconfig.py'. Now, you also need to create the account <a href="https://quantumexperience.ng.bluemix.net/qx/user-guide">here</a> and obtain Personal token to put in the form (in "...") in <code>Qconfig.py</code>.</p>
 </li>
 </ol>
-<p><em>アカウント作成の際の注意</em></p>
-<p><strong>使用目的</strong></p>
+<p><em>Another remarks</em></p>
+<p><strong>Why we want to register?</strong></p>
 <ul>
-<li>以下の２つの欄は適当に答えれば良いかも。別にほんとうの意味での研究目的じゃなくても構わない.
+<li>I suppose that we can write our own purpose in the following entry. It's okay that you don't use it for 'true' research. 
 <img src="./register.png" alt=""></li>
 </ul>
 <p><strong>Personal token</strong>
-以下の画像は私の場合です。
+The following image shows mine token:
 <img src="Personal_token.png" alt=""></p>
-<p>一回生成させたら、それを<code>Qconfig.py</code>の</p>
+<p>Once you generated your own personal token, you just have to put it on <code>Qconfig.py</code> as follows:</p>
 
 <pre><code># Before you can use the jobs API, you need to set up an access token.
 # Log in to the Quantum Experience. Under "Account", generate a personal 
 # access token. Replace "None" below with the quoted token string.
 # Uncomment the APItoken variable, and you will be ready to go.
 
-APItoken = "" # この中に入れる。
+APItoken = "" # HERE
 
 config = {
   "url": 'https://quantumexperience.ng.bluemix.net/api'
@@ -11857,7 +11852,7 @@ if 'APItoken' not in locals():
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Step1:-&#12503;&#12525;&#12464;&#12521;&#12512;&#12434;&#20316;&#25104;&#12377;&#12427;">Step1: &#12503;&#12525;&#12464;&#12521;&#12512;&#12434;&#20316;&#25104;&#12377;&#12427;<a class="anchor-link" href="#Step1:-&#12503;&#12525;&#12464;&#12521;&#12512;&#12434;&#20316;&#25104;&#12377;&#12427;">&#182;</a></h2><p>量子コンピュータの理屈はとりあえず置いといて、実装に関する基本的な構成についてまとめます。</p>
+<h2 id="Step1:-Create-the-program">Step1: Create the program<a class="anchor-link" href="#Step1:-Create-the-program">&#182;</a></h2><p>Let's leave aside the thereory of quantum computer and summarize the basic structure of the source code.</p>
 
 </div>
 </div>
@@ -11867,7 +11862,8 @@ if 'APItoken' not in locals():
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># jupyterはtutorial内で起動するため、qiskitパッケージをインポートするためにディレクトリの階層を一つ上げる必要がある。</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Since Jupyter runs in tutorial directory, you need to raise the directory upto </span>
+<span class="c1"># one level to import qiskit libraries.</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;../&quot;</span><span class="p">)</span> 
 
@@ -11884,15 +11880,16 @@ if 'APItoken' not in locals():
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>プログラムの主なパートとして</p>
+<p>The main program consists of</p>
 <ul>
-<li>QuantumProgram : 全体的なプログラム</li>
-<li>a Circuit : 細かい部品をひとまとめにしたもの。プログラムはcircuitの集合として表せる。</li>
-<li>a Quantum Register : 入力</li>
-<li>a Classical Register : 出力</li>
+<li>QuantumProgram : The whole part</li>
+<li>a Circuit : the one of a part of program and collected small parts. It consisits of Quantum Program.</li>
+<li>a Quantum Register : Input</li>
+<li>a Classical Register : Output</li>
 </ul>
-<p>がある。</p>
-<p>これらを作成する。基本的な流れとしては、<strong>量子レジスタの作成(入力)-&gt;Cuicuitの設計-&gt;量子レジスタを古典レジスタに変換-&gt;古典レジスタ(出力)</strong>となっている。</p>
+<p>In the following, we will create the above parts. So, the flow is</p>
+<p><strong>Creating quantum register (input) -&gt; design for the circuits -&gt; convert quantum register into classic register -&gt; classical register (output)</strong></p>
+<p>I also want to write quantum register as <strong>q-register</strong> and classical register as <strong>c-register</strong> from now on.</p>
 
 </div>
 </div>
@@ -11902,18 +11899,17 @@ if 'APItoken' not in locals():
 <div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># QuantumProgramクラスのインスタンスとしてQ_program作成</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># create Q_program which is the instance of QuantumProgram class</span>
 <span class="n">Q_program</span> <span class="o">=</span> <span class="n">QuantumProgram</span><span class="p">()</span> 
 
-<span class="c1"># レジスタの作成. Q_programのオブジェクト</span>
-<span class="c1"># 2Qbitを持つ量子レジスタqr</span>
+<span class="c1"># create q-register with 4-Qbit which is the object of Q_program</span>
 <span class="n">Q_program</span><span class="o">.</span><span class="n">create_quantum_registers</span><span class="p">(</span><span class="s2">&quot;qr&quot;</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
-<span class="c1"># 2bitを持つ古典レジスタcr</span>
+<span class="c1"># create c-register with 4-Qbit which is the object of Q_program</span>
 <span class="n">Q_program</span><span class="o">.</span><span class="n">create_classical_registers</span><span class="p">(</span><span class="s2">&quot;cr&quot;</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span> 
 
-<span class="c1"># 回路 &quot;qc&quot; の作成</span>
-<span class="c1"># 古典的なレジスタ &quot;cr&quot;と 量子的なレジスタ &quot;qr&quot; をつなげた回路</span>
-<span class="n">qc</span> <span class="o">=</span> <span class="n">Q_program</span><span class="o">.</span><span class="n">create_circuit</span><span class="p">(</span><span class="s2">&quot;qc&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;qr&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;cr&quot;</span><span class="p">])</span> 
+<span class="c1"># Creating the circuit called &quot;qc&quot;</span>
+<span class="c1"># the one connected between q-register &quot;qr&quot; and c-register &quot;cr&quot;</span>
+<span class="n">qc</span> <span class="o">=</span> <span class="n">Q_program</span><span class="o">.</span><span class="n">create_circuit</span><span class="p">(</span><span class="s2">&quot;qc&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;qr&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;cr&quot;</span><span class="p">])</span>
 </pre></div>
 
 </div>
@@ -11944,7 +11940,7 @@ if 'APItoken' not in locals():
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>==&gt; 各レジスタが作成された。一つ一つの部品を書くよりは、まとめて以下のようにも書ける:</p>
+<p>==&gt; The initial setting has done. We might prefer writing as follows:</p>
 
 </div>
 </div>
@@ -11978,7 +11974,7 @@ if 'APItoken' not in locals():
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>これを用いてクラス<code>QuantumProgram</code>のインスタンス変数を初期化する:</p>
+<p>We don't need to spend many lines and read them easily! By using them, we need to initialize the instance variables of the class, <code>QuantumProgram</code>.</p>
 
 </div>
 </div>
@@ -11988,7 +11984,7 @@ if 'APItoken' not in locals():
 <div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Q_program</span> <span class="o">=</span> <span class="n">QuantumProgram</span><span class="p">(</span><span class="n">specs</span><span class="o">=</span><span class="n">Q_SPECS</span><span class="p">)</span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Q_program</span> <span class="o">=</span> <span class="n">QuantumProgram</span><span class="p">(</span><span class="n">specs</span><span class="o">=</span><span class="n">Q_SPECS</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -12019,7 +12015,7 @@ if 'APItoken' not in locals():
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>今後この方法でレジスタを作成する。回路やレジスタの指定には、以下のようにして作成したインスタンスを用いる。いずれも<code>Q_program</code>に対するオブジェクトとして定義されている。</p>
+<p>Let's choose this convenient way from now on. We also use the following instance for specifing a circuit or a register, both of which are defined as a object to <code>Q_program</code>.</p>
 
 </div>
 </div>
@@ -12050,7 +12046,7 @@ if 'APItoken' not in locals():
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>ここまでのコードをまとめると以下のようになる。</p>
+<p>Summarizing the followed code, we obtain:</p>
 
 </div>
 </div>
@@ -12060,7 +12056,8 @@ if 'APItoken' not in locals():
 <div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># jupyterはtutorial内で起動するため、qiskitパッケージをインポートするためにディレクトリの階層を一つ上げる必要がある。</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Since Jupyter runs in tutorial directory, you need to raise the directory upto </span>
+<span class="c1"># one level to import qiskit libraries.</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;../&quot;</span><span class="p">)</span> 
 
@@ -12104,7 +12101,7 @@ if 'APItoken' not in locals():
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>ここでは入力と出力、回路を用意しただけなので、次のステップでは実際に回路にいろいろな操作（ゲート）を付け加えていくことにしよう。</p>
+<p>Note that we have just prepared for the input, output and circuit. In the next step, we will add some operation including 'gates'.</p>
 
 </div>
 </div>
@@ -12113,7 +12110,7 @@ if 'APItoken' not in locals():
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Step2:-&#22238;&#36335;&#12395;&#12466;&#12540;&#12488;&#12434;&#36861;&#21152;&#12377;&#12427;">Step2: &#22238;&#36335;&#12395;&#12466;&#12540;&#12488;&#12434;&#36861;&#21152;&#12377;&#12427;<a class="anchor-link" href="#Step2:-&#22238;&#36335;&#12395;&#12466;&#12540;&#12488;&#12434;&#36861;&#21152;&#12377;&#12427;">&#182;</a></h2>
+<h2 id="Step2:-Adding-gates-into-a-circuit">Step2: Adding gates into a circuit<a class="anchor-link" href="#Step2:-Adding-gates-into-a-circuit">&#182;</a></h2>
 </div>
 </div>
 </div>
@@ -12121,16 +12118,9 @@ if 'APItoken' not in locals():
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>以降は<a href="http://qiita.com/kjtnk/items/8385052a50e3154d1022">「量子コンピュータで1+1を計算する」</a>をベースにして計算させてみます。</p>
-<p>まずは0+0を計算させよう. これまでやってきたようにレジスタを持つ回路を作成したら、<code>circuit</code>インスタンスにいろいろ「ゲート」を追加できる。量子コンピュータでは0+0は以下のように組めば良い.</p>
-<p><img src='0+0.png'/></p>
-<ol>
-<li>q[0]からq[3]はレジスタ(入力)で、初期値として0が入っている。</li>
-<li>トフォリゲート</li>
-<li>XOR回路: <code>q[0]</code> - <code>q[3]</code></li>
-<li>XOR回路: <code>q[1]</code> - <code>q[3]</code></li>
-<li>計測</li>
-</ol>
+<p>First of all, we compute 0+0 in the quantum computing. After creating the circuit as we have done, we can add several operations in it. For the first example, 0+0, we can implement as follows:</p>
+<p><img src='0+0.png'/>
+(Note: This can be done in 'composer' tab in the <a href="https://quantumexperience.ng.bluemix.net/qx/user-guide">website</a>.)</p>
 
 </div>
 </div>
@@ -12204,7 +12194,7 @@ measure qr[3] -&gt; cr[0];
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Step3:-&#12467;&#12540;&#12489;&#12398;&#23455;&#34892;">Step3: &#12467;&#12540;&#12489;&#12398;&#23455;&#34892;<a class="anchor-link" href="#Step3:-&#12467;&#12540;&#12489;&#12398;&#23455;&#34892;">&#182;</a></h2>
+<h2 id="Step3:-executing-the-code">Step3: executing the code<a class="anchor-link" href="#Step3:-executing-the-code">&#182;</a></h2>
 </div>
 </div>
 </div>
@@ -12212,7 +12202,7 @@ measure qr[3] -&gt; cr[0];
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>ここでコードを実行し、クラウドを介してIBMの量子コンピュータと接続して計算を行う。このステップでPersonal tokenが必要になる。</p>
+<p>Now, we can execute the code and then make it computing the quantum computer in IBM through the cloud. In this step you need your Personal token.</p>
 
 </div>
 </div>
@@ -12226,7 +12216,7 @@ measure qr[3] -&gt; cr[0];
 <span class="n">circuits</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Circuit&#39;</span><span class="p">]</span> <span class="c1">#Group of circuits to exec </span>
 
 <span class="n">Q_program</span><span class="o">.</span><span class="n">set_api</span><span class="p">(</span><span class="n">Qconfig</span><span class="o">.</span><span class="n">APItoken</span><span class="p">,</span> <span class="n">Qconfig</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">])</span> 
-<span class="c1">#set the APIToken and API url </span>
+<span class="c1">#set the APIToken and API url</span>
 </pre></div>
 
 </div>
@@ -12258,7 +12248,7 @@ measure qr[3] -&gt; cr[0];
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Trueと出ればIBMの量子コンピュータとつながっているので、以下を実行すれば結果が得られる。</p>
+<p>If you get <code>True</code>, your computer connets the quantum computer in IBM and you will get the following result.</p>
 
 </div>
 </div>
@@ -12303,7 +12293,7 @@ measure qr[3] -&gt; cr[0];
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>エラーが出なければ無事計算は終了している。</p>
+<p>If you obtain the above results, your computation has finished successfully.</p>
 
 </div>
 </div>
@@ -12345,7 +12335,8 @@ measure qr[3] -&gt; cr[0];
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>ここで<code>'0000'</code>というのは、0+0=00を表している。量子レジスタは4つ用意されているので、その値が古典レジスタの値に入り、0000を出力している。</p>
+<p>=&gt; <code>0000</code> means 0+0=00. Since we set four q-registers, the values are put in c-register and display <code>0000</code>.</p>
+<p>Unfortunately, I am not quite sure what <code>1024</code> is. (Maybe $2^{10}$ means the probability but not sure.)</p>
 
 </div>
 </div>
@@ -12354,8 +12345,7 @@ measure qr[3] -&gt; cr[0];
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="&#20840;&#20307;&#12398;&#12467;&#12540;&#12489;">&#20840;&#20307;&#12398;&#12467;&#12540;&#12489;<a class="anchor-link" href="#&#20840;&#20307;&#12398;&#12467;&#12540;&#12489;">&#182;</a></h3><p>ここまでのコードをまとめると、以下のようになっている。</p>
-
+<h3 id="The-whole-part-of-the-code">The whole part of the code<a class="anchor-link" href="#The-whole-part-of-the-code">&#182;</a></h3>
 </div>
 </div>
 </div>
@@ -12364,9 +12354,14 @@ measure qr[3] -&gt; cr[0];
 <div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># jupyterはtutorial内で起動するため、qiskitパッケージをインポートするためにディレクトリの階層を一つ上げる必要がある。</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Since Jupyter runs in tutorial directory, you need to raise the directory upto </span>
+<span class="c1"># one level to import qiskit libraries.</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;../&quot;</span><span class="p">)</span> 
+
+<span class="c1"># ----------------------------------------------</span>
+<span class="c1"># Preparation: q-register, c-register, circuit...</span>
+<span class="c1"># ----------------------------------------------</span>
 
 <span class="kn">from</span> <span class="nn">qiskit</span> <span class="k">import</span> <span class="n">QuantumProgram</span> 
 <span class="kn">import</span> <span class="nn">Qconfig</span>
@@ -12500,7 +12495,7 @@ running on backend: simulator
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="&#12381;&#12398;&#12411;&#12363;&#12398;&#20363;">&#12381;&#12398;&#12411;&#12363;&#12398;&#20363;<a class="anchor-link" href="#&#12381;&#12398;&#12411;&#12363;&#12398;&#20363;">&#182;</a></h2><h3 id="1+0">1+0<a class="anchor-link" href="#1+0">&#182;</a></h3>
+<h2 id="Other-examples">Other examples<a class="anchor-link" href="#Other-examples">&#182;</a></h2><h3 id="1+0">1+0<a class="anchor-link" href="#1+0">&#182;</a></h3>
 </div>
 </div>
 </div>
@@ -12509,7 +12504,7 @@ running on backend: simulator
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><img src='1+0.png'/></p>
-<p>※画像は上記のQiitaの記事より引用</p>
+<p>The images are cited from <a href="http://qiita.com/kjtnk/items/8385052a50e3154d1022">量子コンピュータで1+1を計算する</a> [Japanese].</p>
 
 </div>
 </div>
@@ -12519,9 +12514,14 @@ running on backend: simulator
 <div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># jupyterはtutorial内で起動するため、qiskitパッケージをインポートするためにディレクトリの階層を一つ上げる必要がある。</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Since Jupyter runs in tutorial directory, you need to raise the directory upto </span>
+<span class="c1"># one level to import qiskit libraries.</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;../&quot;</span><span class="p">)</span> 
+
+<span class="c1"># ----------------------------------------------</span>
+<span class="c1"># Preparation: q-register, c-register, circuit...</span>
+<span class="c1"># ----------------------------------------------</span>
 
 <span class="kn">from</span> <span class="nn">qiskit</span> <span class="k">import</span> <span class="n">QuantumProgram</span> 
 <span class="kn">import</span> <span class="nn">Qconfig</span>
@@ -12659,7 +12659,7 @@ running on backend: simulator
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><code>1 + 0 = 01</code>となり、1+0=1が計算できている。出力は古典ビットとして<code>cr[3]cr[2]cr[1]cr[0]</code>と出ることに注意。1024は2の10乗なので、2の冪が10になれば100%かな？違いは回路作成の最初に<code>quantum_r[0]</code>に対してビット反転<code>x</code>を施したことにある。先の例(0+0=00)では、何も入力されていない状態=0であったのが、今回は反転により<code>1</code>になっていた。結果としてこの理屈で計算を進めると、ほしい結果が得られた。</p>
+<p>You can see <code>1+0=01</code>, which means 1+0=1. Note that the output gives the order <code>cr[3]cr[2]cr[1]cr[0]</code> as c-register. The difference from the first example is that we added the bit-flip <code>x</code> to <code>quantum_r[0]</code>. By doing this, <code>quantum_r[0]</code> has an initial value, <code>1</code>.</p>
 
 </div>
 </div>
@@ -12686,12 +12686,17 @@ running on backend: simulator
 <div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># jupyterはtutorial内で起動するため、qiskitパッケージをインポートするためにディレクトリの階層を一つ上げる必要がある。</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Since Jupyter runs in tutorial directory, you need to raise the directory upto </span>
+<span class="c1"># one level to import qiskit libraries.</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;../&quot;</span><span class="p">)</span> 
 
 <span class="kn">from</span> <span class="nn">qiskit</span> <span class="k">import</span> <span class="n">QuantumProgram</span> 
 <span class="kn">import</span> <span class="nn">Qconfig</span>
+
+<span class="c1"># ----------------------------------------------</span>
+<span class="c1"># Preparation: q-register, c-register, circuit...</span>
+<span class="c1"># ----------------------------------------------</span>
 
 <span class="n">Q_SPECS</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Program-tutorial&quot;</span><span class="p">,</span>
@@ -12829,8 +12834,8 @@ running on backend: simulator
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>=&gt; 1 + 1 = 10 (10は10進数で2) となり、1+1=2が計算できた。</p>
-<p><strong>注意</strong> jupyterでこのコードを実行するときは、メモリーを消去(リスタート)してから実行してください。（そうしないとレジスタのビットが反転したまま計算が行われてしまう）</p>
+<p>We could obtain 1+1=10 (in binary number)!</p>
+<p><strong>Note</strong> If you run this code on Jupyter, please execute after clearing the memory. Otherwise, you would carry it out with leaving the bit-flip in the previous computing.</p>
 
 </div>
 </div>
@@ -12839,7 +12844,7 @@ running on backend: simulator
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="&#19968;&#22238;&#12391;-0-+-0,-1-+-0,-1-+-1&#12434;&#35336;&#31639;&#12377;&#12427;">&#19968;&#22238;&#12391; 0 + 0, 1 + 0, 1 + 1&#12434;&#35336;&#31639;&#12377;&#12427;<a class="anchor-link" href="#&#19968;&#22238;&#12391;-0-+-0,-1-+-0,-1-+-1&#12434;&#35336;&#31639;&#12377;&#12427;">&#182;</a></h2>
+<h2 id="Computing-0-+-0,-1-+-0,-1-+-1-ONCE">Computing 0 + 0, 1 + 0, 1 + 1 ONCE<a class="anchor-link" href="#Computing-0-+-0,-1-+-0,-1-+-1-ONCE">&#182;</a></h2>
 </div>
 </div>
 </div>
@@ -12857,12 +12862,17 @@ running on backend: simulator
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># jupyterはtutorial内で起動するため、qiskitパッケージをインポートするためにディレクトリの階層を一つ上げる必要がある。</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Since Jupyter runs in tutorial directory, you need to raise the directory upto </span>
+<span class="c1"># one level to import qiskit libraries.</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;../&quot;</span><span class="p">)</span> 
 
 <span class="kn">from</span> <span class="nn">qiskit</span> <span class="k">import</span> <span class="n">QuantumProgram</span> 
 <span class="kn">import</span> <span class="nn">Qconfig</span>
+
+<span class="c1"># ----------------------------------------------</span>
+<span class="c1"># Preparation: q-register, c-register, circuit...</span>
+<span class="c1"># ----------------------------------------------</span>
 
 <span class="n">Q_SPECS</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Program-tutorial&quot;</span><span class="p">,</span>
@@ -12998,8 +13008,8 @@ running on backend: simulator
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>となり、各結果が計算できました。このコードでは、先程の<code>circuit.x</code>の代わりに<code>circuit.h</code>を用いて、<code>quantum_r[0]</code>と<code>quantum_r[1]</code>の重ね合わせの状態を使いました。</p>
-<p>量子コンピュータの処理が早いと言われる所以はここにあります。このように幾つかの処理を重ね合わせの状態を用いて同時に行えるんですね。今はまだ4つの量子レジスタだけを使っていますし、IBMの量子コンピュータもまだそこまで大規模ではないですが、大量の量子レジスタを持つ量子コンピュータができた場合、とんでもない数の計算を同時に行うことができます。</p>
+<p>I don't need to mention again! We obtained correct results! In this code, we used <code>circuit.h</code> instead of <code>circuit.x</code> and the superposition of <code>quantum_r[0]</code> and <code>quantum_r[1]</code>.</p>
+<p>This is the reason why the processing in the quantum computing is much faster than the normal computer does. The quantum computer enables to carry out several computation paralelly. We have used only four q-register so far and not so big the quantum computer in IBM, but if the one with many q-register is created some day, we could carry out an unimaginable number of computations at the same time!</p>
 
 </div>
 </div>
@@ -13008,7 +13018,8 @@ running on backend: simulator
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="&#12362;&#12431;&#12426;&#12395;">&#12362;&#12431;&#12426;&#12395;<a class="anchor-link" href="#&#12362;&#12431;&#12426;&#12395;">&#182;</a></h2><p>今回は主にどうやって実装するかについてまとめました。ただ、各コードの意味をまだ深く理解できていませんし、ネットに転がっている情報も少ないので、もっともっとIBM Qに触れる人が出てくればいいのにと思います。。。</p>
+<h2 id="Summarize">Summarize<a class="anchor-link" href="#Summarize">&#182;</a></h2><p>This time we have seen how to implement the quantum computation. However, I've not understood the meaning of the code and its theoretical background. What's more, there is few information about them! I wish much people would try IBM Q.</p>
+<p>Thank you for your reading!</p>
 
 </div>
 </div>

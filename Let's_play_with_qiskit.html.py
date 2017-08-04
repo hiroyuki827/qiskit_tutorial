@@ -1,49 +1,45 @@
 
 # coding: utf-8
 
-# # IBM QISKitで遊ぶ
+# # Let's play with qiskit
 
-# このノートでは、IBMによって公開された量子コンピュータのSDK「QISKit」を用いた計算についてまとめています。詳しい量子コンピュータの原理についてはまとめていません。(私自身物理を学んでいる身なので、興味が湧けば追記するかも？) その代わり、Qiitaで初等的なよい例を見つけたので、それをコーディングとしてどう実装するかについて幾つかの例を挙げました。
+# This note discusses the computation by the SDK for the quantum computing, 'QISKit', pubished by IBM. I do not summarize the detailed theoretical background of quantum computation. You might hard to understand the quantum computation by only this note and need to consult other references. Instead, I will just give you several elementary examples and its implementation.
 # 
-# このノートを実行するためにはいくつかのステップが必要です。以下の通り準備を行ってから始めてください。
+# **What we deal with**: 0+0=00, 1+0=01, 1+1=10 and the superposition of them.
 # 
-# (参考文献)
+# **References**
 # 
-# - [量子コンピュータで1+1を計算する](http://qiita.com/kjtnk/items/8385052a50e3154d1022) [Japanese]
 # - [IBM Q experience library](https://quantumexperience.ng.bluemix.net/qx/user-guide)
 # - [A developer’s guide to using the Quantum QISKit SDK](https://developer.ibm.com/code/2017/05/17/developers-guide-to-quantum-qiskit-sdk/)
+# 
+# To perform the code on this note, you're supposed to do the follwing praparation.
+# 
 
-# ## はじめにやるべきこと
+# ## Getting started
 
-# 1. IBM QuantumExperienceパッケージをpipでダウンロード&インストールする: 
+# To run this program, you need to...
 # 
-# `pip install --upgrade IBMQuantumExperience` 
+# 1. Download the package of `IBM QuantumExperience` by pip and install it:
+# `pip install --upgrade IBMQuantumExperience` or `pip3 install --upgrade IBMQuantumExperience`
 # 
-# もしくは 
-# 
-# `pip3 install --upgrade IBMQuantumExperience`
-# 
-# 2. 作業ディレクトリを作成し, 
-# 
+# 2. create the working directory and execute
 # `git clone git clone https://github.com/IBM/qiskit-sdk-py`
 # 
-# 3. `make run`してAnacondaの仮想環境を作成する。
+# 3. move into `qiskit-sdk` directory and then do `make run`. (You will see `jupyter notebook`) After that, you will be able to run Jupyter in `tutorial` directory.
 # 
-# 4. 作業ディレクトリの`giskit-sdk-py`ディレクトリに移動し、`make run`で`jupyter notebook`が起動する. これで「tutorial内で」jupyterを起動できるようになる。この際必要なSDKはすべて読み込まれている。
+# 4. execute `cp tutorial/Qconfig.py.default Qconfig.py` and create 'Qconfig.py'. Now, you also need to create the account [here](https://quantumexperience.ng.bluemix.net/qx/user-guide) and obtain Personal token to put in the form (in "...") in `Qconfig.py`.
 # 
-# 5. `cp tutorial/Qconfig.py.default Qconfig.py`を実行し、Qconfig.pyを作成する。ここで、別途[こちら](https://quantumexperience.ng.bluemix.net/qx/user-guide) でアカウントを作成し、Personal tokenを取得する。これを`Qconfig.py`の所定の欄に入れる。
+# *Another remarks*
 # 
-# *アカウント作成の際の注意*
-# 
-# **使用目的**
-# - 以下の２つの欄は適当に答えれば良いかも。別にほんとうの意味での研究目的じゃなくても構わない.
+# **Why we want to register?**
+# - I suppose that we can write our own purpose in the following entry. It's okay that you don't use it for 'true' research. 
 # ![](./register.png)
 # 
 # **Personal token**
-# 以下の画像は私の場合です。
+# The following image shows mine token:
 # ![](Personal_token.png)
 # 
-# 一回生成させたら、それを`Qconfig.py`の
+# Once you generated your own personal token, you just have to put it on `Qconfig.py` as follows:
 # 
 # ```
 # # Before you can use the jobs API, you need to set up an access token.
@@ -51,7 +47,7 @@
 # # access token. Replace "None" below with the quoted token string.
 # # Uncomment the APItoken variable, and you will be ready to go.
 # 
-# APItoken = "" # この中に入れる。
+# APItoken = "" # HERE
 # 
 # config = {
 #   "url": 'https://quantumexperience.ng.bluemix.net/api'
@@ -62,14 +58,15 @@
 # 
 # ```
 
-# ## Step1: プログラムを作成する
+# ## Step1: Create the program
 # 
-# 量子コンピュータの理屈はとりあえず置いといて、実装に関する基本的な構成についてまとめます。
+# Let's leave aside the thereory of quantum computer and summarize the basic structure of the source code.
 
 # In[1]:
 
 
-# jupyterはtutorial内で起動するため、qiskitパッケージをインポートするためにディレクトリの階層を一つ上げる必要がある。
+# Since Jupyter runs in tutorial directory, you need to raise the directory upto 
+# one level to import qiskit libraries.
 import sys
 sys.path.append("../") 
 
@@ -77,35 +74,35 @@ from qiskit import QuantumProgram
 import Qconfig
 
 
-# プログラムの主なパートとして
-# - QuantumProgram : 全体的なプログラム
-# - a Circuit : 細かい部品をひとまとめにしたもの。プログラムはcircuitの集合として表せる。
-# - a Quantum Register : 入力
-# - a Classical Register : 出力
+# The main program consists of 
+# - QuantumProgram : The whole part
+# - a Circuit : the one of a part of program and collected small parts. It consisits of Quantum Program.
+# - a Quantum Register : Input
+# - a Classical Register : Output
 # 
-# がある。
+# In the following, we will create the above parts. So, the flow is 
 # 
+# **Creating quantum register (input) -> design for the circuits -> convert quantum register into classic register -> classical register (output)**
 # 
-# これらを作成する。基本的な流れとしては、**量子レジスタの作成(入力)->Cuicuitの設計->量子レジスタを古典レジスタに変換->古典レジスタ(出力)**となっている。
+# I also want to write quantum register as **q-register** and classical register as **c-register** from now on.
 
 # In[2]:
 
 
-# QuantumProgramクラスのインスタンスとしてQ_program作成
+# create Q_program which is the instance of QuantumProgram class
 Q_program = QuantumProgram() 
 
-# レジスタの作成. Q_programのオブジェクト
-# 2Qbitを持つ量子レジスタqr
+# create q-register with 4-Qbit which is the object of Q_program
 Q_program.create_quantum_registers("qr", 4)
-# 2bitを持つ古典レジスタcr
+# create c-register with 4-Qbit which is the object of Q_program
 Q_program.create_classical_registers("cr", 4) 
 
-# 回路 "qc" の作成
-# 古典的なレジスタ "cr"と 量子的なレジスタ "qr" をつなげた回路
-qc = Q_program.create_circuit("qc", ["qr"], ["cr"]) 
+# Creating the circuit called "qc"
+# the one connected between q-register "qr" and c-register "cr"
+qc = Q_program.create_circuit("qc", ["qr"], ["cr"])
 
 
-# ==> 各レジスタが作成された。一つ一つの部品を書くよりは、まとめて以下のようにも書ける:
+# ==> The initial setting has done. We might prefer writing as follows:
 
 # In[3]:
 
@@ -125,15 +122,15 @@ Q_SPECS = {
 }
 
 
-# これを用いてクラス`QuantumProgram`のインスタンス変数を初期化する:
+# We don't need to spend many lines and read them easily! By using them, we need to initialize the instance variables of the class, `QuantumProgram`.
 
 # In[4]:
 
 
-Q_program = QuantumProgram(specs=Q_SPECS) 
+Q_program = QuantumProgram(specs=Q_SPECS)
 
 
-# 今後この方法でレジスタを作成する。回路やレジスタの指定には、以下のようにして作成したインスタンスを用いる。いずれも`Q_program`に対するオブジェクトとして定義されている。
+# Let's choose this convenient way from now on. We also use the following instance for specifing a circuit or a register, both of which are defined as a object to `Q_program`.
 
 # In[5]:
 
@@ -150,12 +147,13 @@ quantum_r = Q_program.get_quantum_registers("qr")
 classical_r = Q_program.get_classical_registers('cr')
 
 
-# ここまでのコードをまとめると以下のようになる。
+# Summarizing the followed code, we obtain:
 
 # In[ ]:
 
 
-# jupyterはtutorial内で起動するため、qiskitパッケージをインポートするためにディレクトリの階層を一つ上げる必要がある。
+# Since Jupyter runs in tutorial directory, you need to raise the directory upto 
+# one level to import qiskit libraries.
 import sys
 sys.path.append("../") 
 
@@ -190,21 +188,14 @@ quantum_r = Q_program.get_quantum_registers("qr")
 classical_r = Q_program.get_classical_registers('cr')
 
 
-# ここでは入力と出力、回路を用意しただけなので、次のステップでは実際に回路にいろいろな操作（ゲート）を付け加えていくことにしよう。
+# Note that we have just prepared for the input, output and circuit. In the next step, we will add some operation including 'gates'.
 
-# ## Step2: 回路にゲートを追加する
+# ## Step2: Adding gates into a circuit
 
-# 以降は[「量子コンピュータで1+1を計算する」](http://qiita.com/kjtnk/items/8385052a50e3154d1022)をベースにして計算させてみます。
-# 
-# まずは0+0を計算させよう. これまでやってきたようにレジスタを持つ回路を作成したら、`circuit`インスタンスにいろいろ「ゲート」を追加できる。量子コンピュータでは0+0は以下のように組めば良い.
+# First of all, we compute 0+0 in the quantum computing. After creating the circuit as we have done, we can add several operations in it. For the first example, 0+0, we can implement as follows:
 # 
 # <img src='0+0.png'/>
-# 
-# 1. q[0]からq[3]はレジスタ(入力)で、初期値として0が入っている。
-# 2. トフォリゲート
-# 3. XOR回路: `q[0]` - `q[3]`
-# 4. XOR回路: `q[1]` - `q[3]`
-# 5. 計測
+# (Note: This can be done in 'composer' tab in the [website](https://quantumexperience.ng.bluemix.net/qx/user-guide).)
 
 # In[6]:
 
@@ -235,9 +226,9 @@ QASM_source = Q_program.get_qasm("Circuit")
 print(QASM_source)
 
 
-# ## Step3: コードの実行
+# ## Step3: executing the code
 
-# ここでコードを実行し、クラウドを介してIBMの量子コンピュータと接続して計算を行う。このステップでPersonal tokenが必要になる。
+# Now, we can execute the code and then make it computing the quantum computer in IBM through the cloud. In this step you need your Personal token.
 
 # In[15]:
 
@@ -246,10 +237,10 @@ device = 'simulator' #Backed where execute your program, in this case in the on 
 circuits = ['Circuit'] #Group of circuits to exec 
 
 Q_program.set_api(Qconfig.APItoken, Qconfig.config["url"]) 
-#set the APIToken and API url 
+#set the APIToken and API url
 
 
-# Trueと出ればIBMの量子コンピュータとつながっているので、以下を実行すれば結果が得られる。
+# If you get `True`, your computer connets the quantum computer in IBM and you will get the following result.
 
 # In[16]:
 
@@ -261,7 +252,7 @@ result = Q_program.run(wait=2, timeout=240)
 print(result)
 
 
-# エラーが出なければ無事計算は終了している。
+# If you obtain the above results, your computation has finished successfully.
 
 # In[17]:
 
@@ -269,18 +260,23 @@ print(result)
 Q_program.get_counts("Circuit")
 
 
-# ここで`'0000'`というのは、0+0=00を表している。量子レジスタは4つ用意されているので、その値が古典レジスタの値に入り、0000を出力している。
-
-# ### 全体のコード
+# => `0000` means 0+0=00. Since we set four q-registers, the values are put in c-register and display `0000`.
 # 
-# ここまでのコードをまとめると、以下のようになっている。
+# Unfortunately, I am not quite sure what `1024` is. (Maybe $2^{10}$ means the probability but not sure.)
+
+# ### The whole part of the code
 
 # In[4]:
 
 
-# jupyterはtutorial内で起動するため、qiskitパッケージをインポートするためにディレクトリの階層を一つ上げる必要がある。
+# Since Jupyter runs in tutorial directory, you need to raise the directory upto 
+# one level to import qiskit libraries.
 import sys
 sys.path.append("../") 
+
+# ----------------------------------------------
+# Preparation: q-register, c-register, circuit...
+# ----------------------------------------------
 
 from qiskit import QuantumProgram 
 import Qconfig
@@ -359,20 +355,25 @@ print(result)
 Q_program.get_counts("Circuit")
 
 
-# ## そのほかの例
+# ## Other examples
 # 
 # ### 1+0
 
 # <img src='1+0.png'/>
 # 
-# ※画像は上記のQiitaの記事より引用
+# The images are cited from [量子コンピュータで1+1を計算する](http://qiita.com/kjtnk/items/8385052a50e3154d1022) [Japanese].
 
 # In[5]:
 
 
-# jupyterはtutorial内で起動するため、qiskitパッケージをインポートするためにディレクトリの階層を一つ上げる必要がある。
+# Since Jupyter runs in tutorial directory, you need to raise the directory upto 
+# one level to import qiskit libraries.
 import sys
 sys.path.append("../") 
+
+# ----------------------------------------------
+# Preparation: q-register, c-register, circuit...
+# ----------------------------------------------
 
 from qiskit import QuantumProgram 
 import Qconfig
@@ -454,7 +455,7 @@ print(result)
 Q_program.get_counts("Circuit")
 
 
-# `1 + 0 = 01`となり、1+0=1が計算できている。出力は古典ビットとして`cr[3]cr[2]cr[1]cr[0]`と出ることに注意。1024は2の10乗なので、2の冪が10になれば100%かな？違いは回路作成の最初に`quantum_r[0]`に対してビット反転`x`を施したことにある。先の例(0+0=00)では、何も入力されていない状態=0であったのが、今回は反転により`1`になっていた。結果としてこの理屈で計算を進めると、ほしい結果が得られた。
+# You can see `1+0=01`, which means 1+0=1. Note that the output gives the order `cr[3]cr[2]cr[1]cr[0]` as c-register. The difference from the first example is that we added the bit-flip `x` to `quantum_r[0]`. By doing this, `quantum_r[0]` has an initial value, `1`.
 
 # ### 1+1
 
@@ -463,12 +464,17 @@ Q_program.get_counts("Circuit")
 # In[2]:
 
 
-# jupyterはtutorial内で起動するため、qiskitパッケージをインポートするためにディレクトリの階層を一つ上げる必要がある。
+# Since Jupyter runs in tutorial directory, you need to raise the directory upto 
+# one level to import qiskit libraries.
 import sys
 sys.path.append("../") 
 
 from qiskit import QuantumProgram 
 import Qconfig
+
+# ----------------------------------------------
+# Preparation: q-register, c-register, circuit...
+# ----------------------------------------------
 
 Q_SPECS = {
     "name": "Program-tutorial",
@@ -549,23 +555,28 @@ print(result)
 Q_program.get_counts("Circuit")
 
 
-# => 1 + 1 = 10 (10は10進数で2) となり、1+1=2が計算できた。
+# We could obtain 1+1=10 (in binary number)! 
 # 
-# **注意** jupyterでこのコードを実行するときは、メモリーを消去(リスタート)してから実行してください。（そうしないとレジスタのビットが反転したまま計算が行われてしまう）
+# **Note** If you run this code on Jupyter, please execute after clearing the memory. Otherwise, you would carry it out with leaving the bit-flip in the previous computing. 
 
-# ## 一回で 0 + 0, 1 + 0, 1 + 1を計算する
+# ## Computing 0 + 0, 1 + 0, 1 + 1 ONCE
 
 # <img src='00+01+11.png'/>
 
 # In[1]:
 
 
-# jupyterはtutorial内で起動するため、qiskitパッケージをインポートするためにディレクトリの階層を一つ上げる必要がある。
+# Since Jupyter runs in tutorial directory, you need to raise the directory upto 
+# one level to import qiskit libraries.
 import sys
 sys.path.append("../") 
 
 from qiskit import QuantumProgram 
 import Qconfig
+
+# ----------------------------------------------
+# Preparation: q-register, c-register, circuit...
+# ----------------------------------------------
 
 Q_SPECS = {
     "name": "Program-tutorial",
@@ -644,10 +655,12 @@ print(result)
 Q_program.get_counts("Circuit")
 
 
-# となり、各結果が計算できました。このコードでは、先程の`circuit.x`の代わりに`circuit.h`を用いて、`quantum_r[0]`と`quantum_r[1]`の重ね合わせの状態を使いました。
+# I don't need to mention again! We obtained correct results! In this code, we used `circuit.h` instead of `circuit.x` and the superposition of `quantum_r[0]` and `quantum_r[1]`.
 # 
-# 量子コンピュータの処理が早いと言われる所以はここにあります。このように幾つかの処理を重ね合わせの状態を用いて同時に行えるんですね。今はまだ4つの量子レジスタだけを使っていますし、IBMの量子コンピュータもまだそこまで大規模ではないですが、大量の量子レジスタを持つ量子コンピュータができた場合、とんでもない数の計算を同時に行うことができます。
+# This is the reason why the processing in the quantum computing is much faster than the normal computer does. The quantum computer enables to carry out several computation paralelly. We have used only four q-register so far and not so big the quantum computer in IBM, but if the one with many q-register is created some day, we could carry out an unimaginable number of computations at the same time!
 
-# ## おわりに
+# ## Summarize
 # 
-# 今回は主にどうやって実装するかについてまとめました。ただ、各コードの意味をまだ深く理解できていませんし、ネットに転がっている情報も少ないので、もっともっとIBM Qに触れる人が出てくればいいのにと思います。。。
+# This time we have seen how to implement the quantum computation. However, I've not understood the meaning of the code and its theoretical background. What's more, there is few information about them! I wish much people would try IBM Q.
+# 
+# Thank you for your reading!
