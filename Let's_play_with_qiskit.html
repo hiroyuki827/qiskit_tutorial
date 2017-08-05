@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head><meta charset="utf-8" />
-<title>IBM qiskitで遊ぶ</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>Let's_play_with_qiskit</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 
 <style type="text/css">
@@ -11786,11 +11786,12 @@ div#notebook {
 <p>このノートでは、IBMによって公開された量子コンピュータのSDK「QISKit」を用いた計算についてまとめています。詳しい量子コンピュータの原理についてはまとめていません。(私自身物理を学んでいる身なので、興味が湧けば追記するかも？) その代わり、Qiitaで初等的なよい例を見つけたので、それをコーディングとしてどう実装するかについて幾つかの例を挙げました。</p>
 <p>このノートを実行するためにはいくつかのステップが必要です。以下の通り準備を行ってから始めてください。</p>
 <p>(参考文献)</p>
-<ul>
+<ol>
 <li><a href="http://qiita.com/kjtnk/items/8385052a50e3154d1022">量子コンピュータで1+1を計算する</a> [Japanese]</li>
 <li><a href="https://quantumexperience.ng.bluemix.net/qx/user-guide">IBM Q experience library</a></li>
 <li><a href="https://developer.ibm.com/code/2017/05/17/developers-guide-to-quantum-qiskit-sdk/">A developer’s guide to using the Quantum QISKit SDK</a></li>
-</ul>
+</ol>
+<p>「1.」はこのノートの元ネタです。量子コンピュータでどのように計算させるかというアルゴリズムがまとめられています。「2.」はIBMによる公式ガイドで、量子コンピュータの基礎的な背景や、開発者向けの情報がまとめられています。量子コンピュータに関する理論的背景はこちらを参考ください。なお、ブルーバックスでも扱っている巻はあるようなので、よろしければどうぞ(私は読んでいません)。「3.」では「2.」の開発者向け記事のイントロ部分がまとめられています。私がこのノートを作成したときはまだ「2.」の開発者向けチュートリアルが未完成だったのですが、今ではかなりの部分が仕上がっていますね。本記事を読まれたあとならば<a href="https://github.com/QISKit/qiskit-tutorial">こちら</a>から、より量子コンピュータについて学ぶことができると思います。</p>
 
 </div>
 </div>
@@ -13010,6 +13011,14 @@ running on backend: simulator
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="&#12362;&#12431;&#12426;&#12395;">&#12362;&#12431;&#12426;&#12395;<a class="anchor-link" href="#&#12362;&#12431;&#12426;&#12395;">&#182;</a></h2><p>今回は主にどうやって実装するかについてまとめました。ただ、各コードの意味をまだ深く理解できていませんし、ネットに転がっている情報も少ないので、もっともっとIBM Qに触れる人が出てくればいいのにと思います。。。</p>
 
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="&#20184;&#37682;A:-&#37327;&#23376;&#12467;&#12531;&#12500;&#12517;&#12540;&#12479;&#12398;&#20181;&#32068;&#12415;">&#20184;&#37682;A: &#37327;&#23376;&#12467;&#12531;&#12500;&#12517;&#12540;&#12479;&#12398;&#20181;&#32068;&#12415;<a class="anchor-link" href="#&#20184;&#37682;A:-&#37327;&#23376;&#12467;&#12531;&#12500;&#12517;&#12540;&#12479;&#12398;&#20181;&#32068;&#12415;">&#182;</a></h2>
 </div>
 </div>
 </div>

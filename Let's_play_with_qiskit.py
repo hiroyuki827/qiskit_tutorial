@@ -9,9 +9,11 @@
 # 
 # (参考文献)
 # 
-# - [量子コンピュータで1+1を計算する](http://qiita.com/kjtnk/items/8385052a50e3154d1022) [Japanese]
-# - [IBM Q experience library](https://quantumexperience.ng.bluemix.net/qx/user-guide)
-# - [A developer’s guide to using the Quantum QISKit SDK](https://developer.ibm.com/code/2017/05/17/developers-guide-to-quantum-qiskit-sdk/)
+# 1. [量子コンピュータで1+1を計算する](http://qiita.com/kjtnk/items/8385052a50e3154d1022) [Japanese]
+# 2. [IBM Q experience library](https://quantumexperience.ng.bluemix.net/qx/user-guide)
+# 3. [A developer’s guide to using the Quantum QISKit SDK](https://developer.ibm.com/code/2017/05/17/developers-guide-to-quantum-qiskit-sdk/)
+# 
+# 「1.」はこのノートの元ネタです。量子コンピュータでどのように計算させるかというアルゴリズムがまとめられています。「2.」はIBMによる公式ガイドで、量子コンピュータの基礎的な背景や、開発者向けの情報がまとめられています。量子コンピュータに関する理論的背景はこちらを参考ください。なお、ブルーバックスでも扱っている巻はあるようなので、よろしければどうぞ(私は読んでいません)。「3.」では「2.」の開発者向け記事のイントロ部分がまとめられています。私がこのノートを作成したときはまだ「2.」の開発者向けチュートリアルが未完成だったのですが、今ではかなりの部分が仕上がっていますね。本記事を読まれたあとならば[こちら](https://github.com/QISKit/qiskit-tutorial)から、より量子コンピュータについて学ぶことができると思います。
 
 # ## はじめにやるべきこと
 
@@ -651,3 +653,5 @@ Q_program.get_counts("Circuit")
 # ## おわりに
 # 
 # 今回は主にどうやって実装するかについてまとめました。ただ、各コードの意味をまだ深く理解できていませんし、ネットに転がっている情報も少ないので、もっともっとIBM Qに触れる人が出てくればいいのにと思います。。。
+
+# ## 付録A: 量子コンピュータの仕組み
