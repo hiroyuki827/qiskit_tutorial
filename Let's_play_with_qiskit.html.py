@@ -9,8 +9,10 @@
 # 
 # **References**
 # 
-# - [IBM Q experience library](https://quantumexperience.ng.bluemix.net/qx/user-guide)
-# - [A developer’s guide to using the Quantum QISKit SDK](https://developer.ibm.com/code/2017/05/17/developers-guide-to-quantum-qiskit-sdk/)
+# 1. [IBM Q experience library](https://quantumexperience.ng.bluemix.net/qx/user-guide)
+# 2. [A developer’s guide to using the Quantum QISKit SDK](https://developer.ibm.com/code/2017/05/17/developers-guide-to-quantum-qiskit-sdk/)
+# 
+# The reference, [1.], is where you can find the theoretical background of the quantum computing and that for the developers. When I summarize this note, the developer page on 1. is in the middle of editing. However, [the QISkit tutorial](https://github.com/QISKit/qiskit-tutorial) has much more tutorials including the elementary and advanced examples. So, after finishing this note, you may find interesting examples there. In this note, the content in [2.] is supposed to be dealt.
 # 
 # To perform the code on this note, you're supposed to do the follwing praparation.
 # 
