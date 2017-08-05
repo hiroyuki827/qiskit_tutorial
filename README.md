@@ -9,6 +9,11 @@ Python3.6, Anaconda3, macOS
 - [IBM Q experience library](https://quantumexperience.ng.bluemix.net/qx/user-guide)
 - [A developer’s guide to using the Quantum QISKit SDK](https://developer.ibm.com/code/2017/05/17/developers-guide-to-quantum-qiskit-sdk/)
 
+# Remarks
+2017/08/06
+
+[The official QISKit tutorial](https://github.com/QISKit/qiskit-tutorial)is getting better and deals with more advanced examples, so those who want to know or study the quantum computing more should check it.
+
 # Preparation
 To run this program, you need to...
 
