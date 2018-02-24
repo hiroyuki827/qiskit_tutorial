@@ -7,7 +7,7 @@
 ## お知らせ
 （2017年8月6日現在）
 
-[QISKitの公式チュートリアル](https://github.com/QISKit/qiskit-tutorial)が充実しつつあるので、本ノートの内容を終えた方や、より発展的な内容に興味のある方は参照されることをおすすめします。
+[QISKitの公式チュートリアル](https://github.com/QISKit/qiskit-tutorial)が充実しつつあるので、本ノートの内容を終えた方や、より発展的な内容に興味のある方はそちらを参照されることをおすすめします。
 
 ## 動作環境
 Python3.6, Anaconda3, macOS
@@ -17,7 +17,7 @@ Python3.6, Anaconda3, macOS
 
 1. IBM QuantumExperienceパッケージをpipでダウンロード&インストールする: `pip install --upgrade IBMQuantumExperience` もしくは `pip3 install --upgrade IBMQuantumExperience`
 
-2. 作業ディレクトリを作成し, `git clone git clone https://github.com/IBM/qiskit-sdk-py`する。
+2. 作業ディレクトリを作成し, `git clone https://github.com/IBM/qiskit-sdk-py`する。
 
 3. その中の`qiskit-sdk-py`ディレクトリに移動し、`make run`で`jupyter notebook`. これで「tutorial内で」jupyterを起動できるようになる.
 
